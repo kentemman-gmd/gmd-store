@@ -12,6 +12,11 @@ import loadingAnimation from "./loading-animation.json"
 // Dynamically import Lottie with SSR disabled
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false })
 
+interface Asset {
+  name: string;
+  browser_download_url: string;
+}
+
 const CATALOG_URL = 'https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/plugin-catalog.json';
 
 interface Plugin {
@@ -26,6 +31,11 @@ interface PluginCatalogItem {
   name: string;
   repoUrl: string;
   iconUrl: string;
+}
+
+interface Asset {
+  name: string;
+  browser_download_url: string;
 }
 
 function extractPlainTextSummary(markdown: string, maxLength: number = 150): string {
@@ -75,7 +85,7 @@ export function PluginDisplayWithTitleSearch() {
           }
           const releaseData = await response.json()
           
-          const zipAsset = releaseData.assets.find((asset: any) => asset.name.endsWith('.zip'))
+          const zipAsset = releaseData.assets.find((asset: Asset) => asset.name.endsWith('.zip'))
           if (!zipAsset) {
             throw new Error(`No zip file found for ${item.name}`)
           }
@@ -94,11 +104,12 @@ export function PluginDisplayWithTitleSearch() {
           setPlugins(pluginsData)
           setLoading(false)
         }
-      } catch (err) {
+      } catch (error) {
         if (!signal.aborted) {
           setError('Failed to load plugins. Please try again later.')
           setLoading(false)
         }
+        console.error('Error fetching plugins:', error)
       }
     }
 
@@ -173,6 +184,7 @@ export function PluginDisplayWithTitleSearch() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="bg-white p-1 rounded-lg shadow">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={plugin.iconUrl}
                         alt={`${plugin.name} icon`}
