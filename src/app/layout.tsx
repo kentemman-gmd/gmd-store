@@ -15,7 +15,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "GMD Resources",
-  description: "GMD Resources",
+  description: "Plugins, Models, Documents and other files",
 };
 
 export default function RootLayout({
