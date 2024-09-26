@@ -23,7 +23,6 @@ interface GMDResource {
 export function ResponsiveResourceDisplayWithResponsiveTitles() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [resources, setResources] = useState<GMDResource[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -107,10 +106,7 @@ export function ResponsiveResourceDisplayWithResponsiveTitles() {
           key={category.name}
           variant={selectedCategory === category.name ? "default" : "ghost"}
           className="w-full justify-start"
-          onClick={() => {
-            setSelectedCategory(category.name)
-            setIsSidebarOpen(false)
-          }}
+          onClick={() => setSelectedCategory(category.name)}
         >
           <category.icon className="h-5 w-5 mr-2" />
           {category.name}
