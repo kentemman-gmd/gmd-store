@@ -1,10 +1,11 @@
-import { PluginDisplayWithTitleSearch } from "@/components/plugin-display-with-title-search";
+
+import { ResponsiveResourceDisplayWithResponsiveTitles } from "@/components/responsive-resource-display-with-responsive-titles";
 
 export default function Home() {
   return (
 
     <>
-<PluginDisplayWithTitleSearch/>
+<ResponsiveResourceDisplayWithResponsiveTitles/>
     </>
    
   );
