@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Search, Menu, Puzzle, Box, FileText, MoreHorizontal, Star, Download,  LayoutGrid} from "lucide-react"
+import { Search, Menu, Puzzle, Box, FileText, Star, Download,  LayoutGrid, Package2} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -31,7 +31,7 @@ export function ResponsiveResourceDisplayWithResponsiveTitles() {
     { name: "Plugins", icon: Puzzle },
     { name: "Models", icon: Box },
     { name: "Documents", icon: FileText },
-    { name: "Others", icon: MoreHorizontal },
+    { name: "Others", icon: Package2 },
   ]
 
   useEffect(() => {
