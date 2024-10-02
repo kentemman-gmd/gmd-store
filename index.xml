@@ -1,6 +1,6 @@
 <plugins>
     <!-- Plugin 1 -->
-    <pyqgis_plugin name="PluginOne" version="1.0">
+    <pyqgis_plugin name="QML Style Manager" version="5.2">
         <description>QML Style Manager is a powerful QGIS plugin designed to streamline the process of applying QML styles to layers within specific layer groups. This plugin is particularly useful for managing and styling large sets of geospatial data where consistent visual representation is crucial</description>
         <about>TEST</about>
         <version>5.2</version>
