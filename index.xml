@@ -7,10 +7,10 @@
         <qgis_minimum_version>3.0</qgis_minimum_version>
         <qgis_maximum_version>3.24</qgis_maximum_version>
         <homepage>https://yourdomain.com/pluginone</homepage>
-        <download_url>https://yourdomain.com/your-repository/plugins/pluginone/pluginone.zip</download_url>
+        <download_url>https://resources-gmd.vercel.app/plugins/QML-Style-Manager/apply_qml_style_5.2.zip</download_url>
         <file_name>apply_qml_style_5.2.zip</file_name>
         <author>Philippine Statistics Authority | GMD</author>
-        <email>authorone@example.com</email>
+        <email>kedeleon.psagmd@gmail.com</email>
         <experimental>False</experimental>
         <deprecated>False</deprecated>
     </pyqgis_plugin>
