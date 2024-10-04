@@ -22,7 +22,7 @@
         <deprecated>False</deprecated>
     </pyqgis_plugin>
 
-    <pyqgis_plugin name="Color Categorizer" version="1.32">
+    <pyqgis_plugin name="Color Categorizer" version="1.33">
         <version>1.33</version>
         <description>This plugin allows users to categorize layers based on color data provided in a
             JSON file. Users can select a layer, attribute field, and JSON file containing color
