@@ -1,0 +1,20 @@
+[general]
+name=Color Categorizer
+qgisMinimumVersion=3.28
+description=This plugin allows users to categorize layers based on color data provided in a JSON file. Users can select a layer, attribute field, and JSON file containing color data to apply categorized symbology.
+version=1.32
+author=Philippine Statistics Authority
+email=test@gmail.com
+
+about=The Color Categorizer plugin is designed to make it easier to apply categorized symbology to layers in QGIS. It allows users to load color configurations from a JSON file, select a target layer, and apply the categorized symbology based on an attribute field.
+tracker=http://bugs
+repository=http://repo
+
+tags=python
+
+homepage=https://resources-gmd.vercel.app/
+category=Plugins
+icon=icon.png
+experimental=False
+
+

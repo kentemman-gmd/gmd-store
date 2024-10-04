@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugins>
+    <pyqgis_plugin name="QML Style Manager" version="5.2">
+        <description>This plugin is particularly useful for managing and styling large sets of
+            geospatial data where consistent visual representation is crucial.</description>
+        <about>QML Style Manager is a QGIS plugin designed to streamline the process of applying QML
+            styles to layers within specific layer groups. This plugin enhances layer styling and
+            management by allowing for multi-select of layer groups, automated style application,
+            customizable layer order and progress tracking.</about>
+        <qgis_minimum_version>3.22.9</qgis_minimum_version>
+        <homepage>https://resources-gmd.vercel.app/</homepage>
+        <file_name>apply_qml_style.zip</file_name>
+        <icon>icon.png</icon>
+        <author>Philippine Statistics Authority | GMD</author>
+        <experimental>False</experimental>
+        <deprecated>False</deprecated>
+        <download_url>http://repo</download_url>
+    </pyqgis_plugin>
+    <pyqgis_plugin name="Color Categorizer" version="1.32">
+        <description>This plugin allows users to categorize layers based on color data provided in a
+            JSON file. Users can select a layer, attribute field, and JSON file containing color
+            data to apply categorized symbology.</description>
+        <about>The Color Categorizer plugin is designed to make it easier to apply categorized
+            symbology to layers in QGIS. It allows users to load color configurations from a JSON
+            file, select a target layer, and apply the categorized symbology based on an attribute
+            field.</about>
+        <qgis_minimum_version>3.28</qgis_minimum_version>
+        <homepage>https://resources-gmd.vercel.app/</homepage>
+        <file_name>color_categorizer.zip</file_name>
+        <icon>icon.png</icon>
+        <author>Philippine Statistics Authority</author>
+        <experimental>False</experimental>
+        <deprecated>False</deprecated>
+        <download_url>http://repo</download_url>
+    </pyqgis_plugin>
+</plugins>
