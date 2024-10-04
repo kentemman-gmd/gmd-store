@@ -1,6 +1,6 @@
 <plugins>
 
-    <pyqgis_plugin name="PluginOne" version="1.0">
+    <!-- <pyqgis_plugin name="PluginOne" version="1.0">
         <description>Plugin One description goes here</description>
         <about>Detailed info about Plugin One</about>
         <version>1.0</version>
@@ -13,7 +13,21 @@
         <email>authorone@example.com</email>
         <experimental>False</experimental>
         <deprecated>False</deprecated>
-    </pyqgis_plugin>
+    </pyqgis_plugin> -->
 
+    <pyqgis_plugin name="QML Style Manager" version="latest">
+        <description>QML Style Manager is a powerful QGIS plugin designed to streamline the process of applying QML styles to layers within specific layer groups. This plugin is particularly useful for managing and styling large sets of geospatial data where consistent visual representation is crucial.</description>
+        <about>Folder Selection: Select a folder containing QML files. Layer Group Selection: Choose from available layer groups ending with _2024maplayers. Apply Styles: Automatically apply QML styles to layers based on their names. Rearrange Layers: Organize layers within selected groups according to a specified order.</about>
+        <version>latest</version>
+        <qgis_minimum_version>3.0</qgis_minimum_version>
+        <homepage>https://resources-gmd.vercel.app/</homepage>
+        <download_url>https://github.com/Geotags-GMD/apply_qml_style/releases/download/v5.2/apply_qml_style_5.2.zip</download_url>
+        <file_name>qml-style-manager.zip</file_name>
+        <icon>https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/qml-style-manager.png</icon>
+        <author>Your Name</author>
+        <email>your-email@example.com</email>
+        <experimental>False</experimental>
+        <deprecated>False</deprecated>
+    </pyqgis_plugin>
 
 </plugins>
