@@ -34,7 +34,6 @@
         <author_name>Philippine Statistics Authority | GMD</author_name>
         <qgis_minimum_version>3.28</qgis_minimum_version>
         <homepage>https://resources-gmd.vercel.app/</homepage>
-        <file_name>apply_qml_style.zip</file_name>
         <download_url>
             https://github.com/Geotags-GMD/color_categorizer/releases/download/v1.32/color_categorizer.zip</download_url>
         <icon>
