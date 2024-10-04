@@ -1,49 +1,19 @@
 <plugins>
-    <!-- Plugin 1: QML Style Manager -->
-    <pyqgis_plugin name="QML Style Manager" version="latest">
-        <description>QML Style Manager is a powerful QGIS plugin designed to streamline the process of applying QML styles to layers within specific layer groups. This plugin is particularly useful for managing and styling large sets of geospatial data where consistent visual representation is crucial.</description>
-        <about>Folder Selection: Select a folder containing QML files. Layer Group Selection: Choose from available layer groups ending with _2024maplayers. Apply Styles: Automatically apply QML styles to layers based on their names. Rearrange Layers: Organize layers within selected groups according to a specified order.</about>
-        <version>latest</version>
+
+    <pyqgis_plugin name="PluginOne" version="1.0">
+        <description>Plugin One description goes here</description>
+        <about>Detailed info about Plugin One</about>
+        <version>1.0</version>
         <qgis_minimum_version>3.0</qgis_minimum_version>
-        <homepage>https://api.github.com/repos/Geotags-GMD/apply_qml_style/releases/latest</homepage>
-        <download_url>https://api.github.com/repos/Geotags-GMD/apply_qml_style/releases/latest</download_url>
-        <file_name>qml-style-manager.zip</file_name>
-        <icon>https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/qml-style-manager.png</icon>
-        <author>Your Name</author>
-        <email>your-email@example.com</email>
+        <qgis_maximum_version>3.24</qgis_maximum_version>
+        <homepage>https://resources-gmd.vercel.app/</homepage>
+        <download_url>https://github.com/Geotags-GMD/apply_qml_style/releases/download/v5.2/apply_qml_style_5.2.zip</download_url>
+        <file_name>apply_qml_style_5.2.zip</file_name>
+        <author>Author One</author>
+        <email>authorone@example.com</email>
         <experimental>False</experimental>
         <deprecated>False</deprecated>
     </pyqgis_plugin>
 
-    <!-- Plugin 2: Color Categorizer -->
-    <pyqgis_plugin name="Color Categorizer" version="latest">
-        <description>Color Categorizer plugin for QGIS allows users to apply categorized colors to layers based on attributes using color data from a JSON file. This tool helps automate the process of applying consistent styling to map layers, particularly useful for thematic mapping.</description>
-        <about>Select a layer and attribute field to categorize. Load color data from a JSON file and display it in an editable table. Customize colors using a built-in color picker. Apply categorized color symbology to the selected layer. Save and load settings, including previously selected JSON paths, layers, and attributes.</about>
-        <version>latest</version>
-        <qgis_minimum_version>3.0</qgis_minimum_version>
-        <homepage>https://api.github.com/repos/Geotags-GMD/color_categorizer/releases/latest</homepage>
-        <download_url>https://api.github.com/repos/Geotags-GMD/color_categorizer/releases/latest</download_url>
-        <file_name>color-categorizer.zip</file_name>
-        <icon>https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/color_categorizer.png</icon>
-        <author>Your Name</author>
-        <email>your-email@example.com</email>
-        <experimental>False</experimental>
-        <deprecated>False</deprecated>
-    </pyqgis_plugin>
 
-    <!-- Plugin 3: Query Manager -->
-    <pyqgis_plugin name="Query Manager" version="latest">
-        <description>The Query Manager provides an intuitive interface for building and managing queries on geospatial data layers within QGIS. Users can create, test, save, and apply queries easily, improving workflow efficiency for data analysis and visualization.</description>
-        <about>Dynamic Query Builder: Select layers, fields, and values to construct queries visually. Saved Queries Management: Save, update, and delete queries for later use. Test Queries: Validate queries before applying them to ensure correctness. Clear Filter: Quickly reset query fields and filters. User-Friendly Interface: Designed with a clean layout for easy navigation.</about>
-        <version>latest</version>
-        <qgis_minimum_version>3.0</qgis_minimum_version>
-        <homepage>https://api.github.com/repos/Geotags-GMD/query_builder_dialog/releases/latest</homepage>
-        <download_url>https://api.github.com/repos/Geotags-GMD/query_builder_dialog/releases/latest</download_url>
-        <file_name>query-manager.zip</file_name>
-        <icon>https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/query_manager.png</icon>
-        <author>Your Name</author>
-        <email>your-email@example.com</email>
-        <experimental>False</experimental>
-        <deprecated>False</deprecated>
-    </pyqgis_plugin>
 </plugins>
