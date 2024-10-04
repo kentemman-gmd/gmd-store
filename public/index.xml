@@ -6,8 +6,8 @@
         <version>5.2</version>
         <qgis_minimum_version>3.22.9</qgis_minimum_version>
         <homepage>https://resources-gmd.vercel.app/</homepage>
-        <download_url>https://github.com/Geotags-GMD/apply_qml_style/releases/download/v5.2/apply_qml_style_5.2.zip</download_url>
-        <file_name>apply_qml_style_5.2.zip</file_name>
+        <download_url>https://github.com/Geotags-GMD/apply_qml_style/releases/download/v5.2/apply_qml_style.zip</download_url>
+        <file_name>apply_qml_style.zip</file_name>
         <icon>https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/qml-style-manager.png</icon>
         <author>Philippine Statistics Authority | GMD</author>
         <email>kedeleon.psagmd@gmail.com</email>
