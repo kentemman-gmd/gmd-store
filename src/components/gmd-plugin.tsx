@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import { Search, Download, Copy, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
+// Define the Plugin interface
 interface Plugin {
   id: number;
   name: string;
@@ -21,6 +22,16 @@ interface Plugin {
   description: string;
   latestRelease: string;
   downloadUrl: string;
+}
+
+// Define the structure of the data fetched from the JSON file
+interface PluginData {
+  name: string;
+  category: string;
+  iconUrl: string;
+  description: string;
+  latestUpdate: string;
+  repoUrl: string;
 }
 
 function PluginCard({ plugin, onClick }: { plugin: Plugin; onClick: () => void }) {
@@ -70,10 +81,10 @@ export function GmdPlugin() {
       const response = await fetch(
         "https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/gmd-resources.json"
       )
-      const data = await response.json()
+      const data: PluginData[] = await response.json() // Use PluginData type here
 
       const plugins = await Promise.all(
-        data.map(async (plugin: any, index: number) => {
+        data.map(async (plugin: PluginData, index: number) => {
           let downloadUrl = plugin.repoUrl // Fallback to repo URL
 
           if (plugin.repoUrl.includes("github.com")) {
@@ -206,9 +217,15 @@ export function GmdPlugin() {
                   <p className="text-lg font-semibold text-gray-700 mb-2">{selectedPlugin.type}</p>
                   <p className="text-base text-gray-600 mb-4">{selectedPlugin.description}</p>
                   <p className="text-sm text-gray-500 mb-4">Latest release: {selectedPlugin.latestRelease}</p>
-                  <Button className="w-full" asChild>
-                    <a href={selectedPlugin.downloadUrl} download className="w-full flex justify-center">
+                  {/* <Button className="w-full" onClick={() => window.open(selectedPlugin.downloadUrl, "_blank")} >
+                    <a href={selectedPlugin.downloadUrl} target="_blank" rel="noopener noreferrer" className="w-full flex justify-center">
                       <Download className="mr-2" />
+                      Download
+                    </a>
+                  </Button> */}
+                 <Button className="w-full" asChild>
+                    <a href={selectedPlugin.downloadUrl} download className="flex items-center justify-center">
+                      <Download className="w-5 h-5 mr-2" />
                       Download
                     </a>
                   </Button>
