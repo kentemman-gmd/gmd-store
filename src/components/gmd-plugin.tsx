@@ -1,0 +1,223 @@
+'use client'
+
+import { useState, useEffect, useCallback } from "react"
+import { Search, Download, Copy, Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/hooks/use-toast"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
+interface Plugin {
+  id: number;
+  name: string;
+  type: string;
+  image: string;
+  description: string;
+  latestRelease: string;
+  downloadUrl: string;
+}
+
+function PluginCard({ plugin, onClick }: { plugin: Plugin; onClick: () => void }) {
+  return (
+    <Card className="cursor-pointer transition-transform hover:scale-105" onClick={onClick}>
+      <CardHeader className="p-0">
+        <img src={plugin.image} alt={plugin.name} className="w-full h-40 object-cover rounded-t-lg" />
+      </CardHeader>
+      <CardContent className="p-4">
+        <CardTitle className="text-lg mb-1">{plugin.name}</CardTitle>
+        <CardDescription className="text-sm text-gray-500 mb-2">{plugin.type}</CardDescription>
+        <p className="text-xs text-gray-600">Latest: {plugin.latestRelease}</p>
+      </CardContent>
+    </Card>
+  )
+}
+
+function PluginGrid({ plugins, onPluginClick }: { plugins: Plugin[]; onPluginClick: (plugin: Plugin) => void }) {
+  if (plugins.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-lg font-semibold text-gray-600">No plugins found</p>
+        <p className="text-sm text-gray-500">Try adjusting your search</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {plugins.map((plugin) => (
+        <PluginCard key={plugin.id} plugin={plugin} onClick={() => onPluginClick(plugin)} />
+      ))}
+    </div>
+  )
+}
+
+export function GmdPlugin() {
+  const [selectedPlugin, setSelectedPlugin] = useState<Plugin | null>(null)
+  const [searchQuery, setSearchQuery] = useState<string>("")
+  const [plugins, setPlugins] = useState<Plugin[]>([])
+  const [isCopied, setIsCopied] = useState<boolean>(false)
+  const repoLink = "https://github.com/api/index.xml"
+  const { toast } = useToast()
+
+  const fetchPlugins = async () => {
+    try {
+      const response = await fetch(
+        "https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/gmd-resources.json"
+      )
+      const data = await response.json()
+
+      const plugins = await Promise.all(
+        data.map(async (plugin: any, index: number) => {
+          let downloadUrl = plugin.repoUrl // Fallback to repo URL
+
+          if (plugin.repoUrl.includes("github.com")) {
+            const apiUrl = plugin.repoUrl.replace(
+              "https://github.com",
+              "https://api.github.com/repos"
+            ) + "/releases/latest"
+
+            try {
+              const releaseResponse = await fetch(apiUrl)
+              const releaseData = await releaseResponse.json()
+              downloadUrl = releaseData.assets[0]?.browser_download_url || downloadUrl
+            } catch (error) {
+              console.warn(`Failed to fetch release for ${plugin.name}:`, error)
+            }
+          }
+
+          return {
+            id: index,
+            name: plugin.name,
+            type: plugin.category,
+            image: plugin.iconUrl,
+            description: plugin.description,
+            latestRelease: plugin.latestUpdate,
+            downloadUrl,
+          }
+        })
+      )
+
+      setPlugins(plugins)
+    } catch (error) {
+      console.error("Error fetching plugins:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchPlugins()
+  }, []) // Empty dependency array to run only once
+
+  const handlePluginClick = (plugin: Plugin) => {
+    setSelectedPlugin(plugin)
+  }
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(repoLink).then(() => {
+      setIsCopied(true)
+      toast({
+        title: "Link copied!",
+        description: "The repository link has been copied to your clipboard.",
+      })
+      setTimeout(() => setIsCopied(false), 2000)
+    })
+  }
+
+  // Update search query directly in the input's onChange
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const filteredPlugins = plugins.filter((plugin) => {
+    return (
+      plugin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      plugin.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })
+
+  return (
+    <div className="flex flex-col h-screen bg-gray-100">
+      <header className="bg-gray-100 p-4">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-gray-800">GMD Plugin</h1>
+        </div>
+      </header>
+      <main className="flex-grow overflow-auto">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="mb-6">
+            <p className="text-lg text-gray-600 mb-4">
+              Explore and download a curated collection of QGIS plugins to enhance your geospatial workflow.
+            </p>
+            <Card className="mb-4">
+              <CardHeader>
+                <CardTitle className="text-xl">Repository Link</CardTitle>
+                <CardDescription>Copy the link to access the GMD Plugin repository</CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col sm:flex-row items-center gap-2">
+                <Input
+                  value={repoLink}
+                  readOnly
+                  className="flex-grow"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCopyLink}
+                  className="w-full sm:w-auto"
+                >
+                  {isCopied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+                  {isCopied ? "Copied" : "Copy"}
+                </Button>
+              </CardContent>
+            </Card>
+            <div className="relative">
+              <Input
+                type="search"
+                placeholder="Search plugins"
+                value={searchQuery}
+                onChange={handleSearchChange} // Directly set the search query
+                className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            </div>
+          </div>
+          <PluginGrid plugins={filteredPlugins} onPluginClick={handlePluginClick} />
+        </div>
+      </main>
+      <Dialog open={!!selectedPlugin} onOpenChange={() => setSelectedPlugin(null)}>
+        <DialogContent className="max-w-3xl">
+          {selectedPlugin && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl">{selectedPlugin.name}</DialogTitle>
+              </DialogHeader>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                <img
+                  src={selectedPlugin.image}
+                  alt={selectedPlugin.name}
+                  className="w-full aspect-square object-cover rounded-md col-span-1"
+                />
+                <div className="col-span-1 sm:col-span-2">
+                  <p className="text-lg font-semibold text-gray-700 mb-2">{selectedPlugin.type}</p>
+                  <p className="text-base text-gray-600 mb-4">{selectedPlugin.description}</p>
+                  <p className="text-sm text-gray-500 mb-4">Latest release: {selectedPlugin.latestRelease}</p>
+                  <Button className="w-full" asChild>
+                    <a href={selectedPlugin.downloadUrl} download className="w-full flex justify-center">
+                      <Download className="mr-2" />
+                      Download
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}
