@@ -151,6 +151,32 @@ export function GmdPlugin() {
     )
   })
 
+  const handleDownload = async (resource: Plugin) => { // Updated parameter type to Plugin
+    try {
+      const response = await fetch(resource.downloadUrl) // Use the downloadUrl from the Plugin
+      const releaseData = await response.json()
+
+      if (response.ok) {
+        const zipAsset = releaseData.assets.find((asset: { name: string; browser_download_url: string }) => 
+          asset.name.endsWith('.zip')
+        )
+
+        if (zipAsset) {
+          window.open(zipAsset.browser_download_url, "_blank")
+        } else {
+          console.error('No zip file found in the latest release')
+          // You might want to show an error message to the user here
+        }
+      } else {
+        console.error('Failed to fetch latest release:', releaseData.message)
+        // You might want to show an error message to the user here
+      }
+    } catch (error) {
+      console.error('Error fetching latest release:', error)
+      // You might want to show an error message to the user here
+    }
+  }
+
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       <header className="bg-gray-100 p-4">
@@ -223,8 +249,8 @@ export function GmdPlugin() {
                       Download
                     </a>
                   </Button> */}
-                 <Button className="w-full" asChild>
-                    <a href={selectedPlugin.downloadUrl} download className="flex items-center justify-center">
+                 <Button className="w-full" onClick={() => handleDownload(selectedPlugin)} asChild>
+                    <a className="flex items-center justify-center">
                       <Download className="w-5 h-5 mr-2" />
                       Download
                     </a>
