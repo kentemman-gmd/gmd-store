@@ -73,7 +73,7 @@ export function GmdPlugin() {
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [plugins, setPlugins] = useState<Plugin[]>([])
   const [isCopied, setIsCopied] = useState<boolean>(false)
-  const repoLink = "https://github.com/api/index.xml"
+  const repoLink = "https://gmd-plugin.vercel.app/api/index.xml"
   const { toast } = useToast()
 
   const fetchPlugins = async () => {
