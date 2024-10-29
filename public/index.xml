@@ -41,8 +41,8 @@
         <file_name>color_categorizer.zip</file_name>
     </pyqgis_plugin>
 
-    <pyqgis_plugin name="Error List Checker" version="1.0">
-        <version>1.0</version>
+    <pyqgis_plugin name="Error List Checker" version="1.1">
+        <version>1.1</version>
         <description>This plugin allows users to validate geospatial data by checking for discrepancies in facility names and sector categories. It generates a detailed error list for review.</description>
         <about>The Error List Checker plugin provides an intuitive interface for validating attributes within geospatial data layers in QGIS. Users can select layers, specify validation criteria, and generate an error list for facilities that do not meet the required conditions.</about>
         <author_name>Philippine Statistics Authority | GMD</author_name>
