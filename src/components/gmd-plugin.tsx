@@ -188,7 +188,7 @@ export function GmdPlugin() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="mb-6">
             <p className="text-lg text-gray-600 mb-4">
-              Explore and download a curated collection of QGIS plugins to enhance your geospatial workflow.
+            Explore and download the GMD plugin collection designed to accelerate your geospatial workflow.
             </p>
             <Card className="mb-4">
               <CardHeader>
