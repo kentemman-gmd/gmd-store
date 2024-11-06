@@ -1,0 +1,60 @@
+<plugins>
+
+    <pyqgis_plugin name="QML Style Manager" version="5.2">
+        <description>QML Style Manager is a powerful QGIS plugin designed to streamline the process
+            of applying QML styles to layers within specific layer groups. This plugin is
+            particularly useful for managing and styling large sets of geospatial data where
+            consistent visual representation is crucial.</description>
+        <about>Folder Selection: Select a folder containing QML files. Layer Group Selection: Choose
+            from available layer groups ending with _2024maplayers. Apply Styles: Automatically
+            apply QML styles to layers based on their names. Rearrange Layers: Organize layers
+            within selected groups according to a specified order.</about>
+        <version>5.2</version>
+        <qgis_minimum_version>3.22.9</qgis_minimum_version>
+        <homepage>https://resources-gmd.vercel.app/</homepage>
+        <download_url>
+            https://github.com/Geotags-GMD/apply_qml_style/releases/download/v5.2/apply_qml_style.zip</download_url>
+        <file_name>apply_qml_style.zip</file_name>
+        <icon>
+            https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/qml-style-manager.png</icon>
+        <author>Philippine Statistics Authority | GMD</author>
+        <experimental>False</experimental>
+        <deprecated>False</deprecated>
+    </pyqgis_plugin>
+
+    <pyqgis_plugin name="Color Categorizer" version="1.32">
+        <version>1.32</version>
+        <description>This plugin allows users to categorize layers based on color data provided in a
+            JSON file. Users can select a layer, attribute field, and JSON file containing color
+            data to apply categorized symbology.</description>
+        <about>The Color Categorizer plugin is designed to make it easier to apply categorized
+            symbology to layers in QGIS. It allows users to load color configurations from a JSON
+            file, select a target layer, and apply the categorized symbology based on an attribute
+            field.</about>
+        <author_name>Philippine Statistics Authority | GMD</author_name>
+        <qgis_minimum_version>3.28</qgis_minimum_version>
+        <homepage>https://resources-gmd.vercel.app/</homepage>
+        <download_url>
+            https://github.com/Geotags-GMD/color_categorizer/releases/download/v1.32/color_categorizer.zip</download_url>
+        <icon>
+            https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/color_categorizer.png</icon>
+        <file_name>color_categorizer.zip</file_name>
+    </pyqgis_plugin>
+
+    <pyqgis_plugin name="Error List Checker" version="1.1">
+        <version>1.1</version>
+        <description>This plugin allows users to validate geospatial data by checking for discrepancies in facility names and sector categories. It generates a detailed error list for review.</description>
+        <about>The Error List Checker plugin provides an intuitive interface for validating attributes within geospatial data layers in QGIS. Users can select layers, specify validation criteria, and generate an error list for facilities that do not meet the required conditions.</about>
+        <author_name>Philippine Statistics Authority | GMD</author_name>
+        <qgis_minimum_version>3.28</qgis_minimum_version>
+        <homepage>https://resources-gmd.vercel.app/</homepage>
+        <download_url>
+            https://github.com/kentemman-gmd/error_list_checker/releases/download/v1.1/error_list_checker.zip</download_url>
+        <icon>
+            https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/error-list.png</icon>
+        <file_name>error_list_checker.zip</file_name>
+    </pyqgis_plugin>
+    
+
+
+</plugins>
