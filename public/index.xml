@@ -1,6 +1,6 @@
 <plugins>
 
-    <pyqgis_plugin name="QML Style Manager" version="5.2">
+    <pyqgis_plugin name="QML Style Manager" version="5.22">
         <description>QML Style Manager is a powerful QGIS plugin designed to streamline the process
             of applying QML styles to layers within specific layer groups. This plugin is
             particularly useful for managing and styling large sets of geospatial data where
@@ -9,11 +9,11 @@
             from available layer groups ending with _2024maplayers. Apply Styles: Automatically
             apply QML styles to layers based on their names. Rearrange Layers: Organize layers
             within selected groups according to a specified order.</about>
-        <version>5.2</version>
+        <version>5.22</version>
         <qgis_minimum_version>3.22.9</qgis_minimum_version>
         <homepage>https://resources-gmd.vercel.app/</homepage>
         <download_url>
-            https://github.com/Geotags-GMD/apply_qml_style/releases/download/v5.2/apply_qml_style.zip</download_url>
+            https://raw.githubusercontent.com/kentemman-gmd/Plugin_OnDev/refs/heads/main/plugins/apply_qml_style.zip</download_url>
         <file_name>apply_qml_style.zip</file_name>
         <icon>
             https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/qml-style-manager.png</icon>
@@ -42,6 +42,38 @@
     </pyqgis_plugin>
 
 
+     <pyqgis_plugin name="AuQCBMS" version="0.2">
+        <version>0.2</version>
+        <description>AuQCBMS is a QGIS plugin that streamlines mapping tasks with easy styling, filtering by geocode, and organized layer exports.</description>
+        <about>AuQCBMS enables GIS users to apply QML styles, filter layers by geocode, and export selected layers into a structured output folder based on geocode selections.</about>
+        <author_name>Philippine Statistics Authority | GMD</author_name>
+        <qgis_minimum_version>3.0</qgis_minimum_version>
+        <homepage>https://gmd-plugin.vercel.app/</homepage>
+        <download_url>
+            https://raw.githubusercontent.com/kentemman-gmd/Plugin_OnDev/refs/heads/main/plugins/auqcbms.zip</download_url>
+        <icon>
+            https://raw.githubusercontent.com/kentemman-gmd/Plugin_OnDev/refs/heads/main/icon/auqcbms.png</icon>
+        <file_name>auqcbms.zip</file_name>
+    </pyqgis_plugin>
 
+
+      <pyqgis_plugin name="Error List Checker" version="1.4">
+        <version>1.4</version>
+        <description>This plugin allows users to validate geospatial data by checking for
+            discrepancies in facility names and sector categories. It generates a detailed error
+            list for review.</description>
+        <about>The Error List Checker plugin provides an intuitive interface for validating
+            attributes within geospatial data layers in QGIS. Users can select layers, specify
+            validation criteria, and generate an error list for facilities that do not meet the
+            required conditions.</about>
+        <author_name>Philippine Statistics Authority | GMD</author_name>
+        <qgis_minimum_version>3.0</qgis_minimum_version>
+        <homepage>https://gmd-plugin.vercel.app/</homepage>
+        <download_url>
+            https://raw.githubusercontent.com/kentemman-gmd/Plugin_OnDev/refs/heads/main/plugins/error_list_checker.zip</download_url>
+        <icon>
+            https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/error-list.png</icon>
+        <file_name>error_list_checker.zip</file_name>
+    </pyqgis_plugin>
 
 </plugins>
