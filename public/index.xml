@@ -87,7 +87,7 @@
             https://raw.githubusercontent.com/kentemman-gmd/Plugin_OnDev/refs/heads/main/plugins/overlap_processing.zip</download_url>
         <icon>
             https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/icons/error-list.png</icon>
-        <file_name>error_list_checker.zip</file_name>
+        <file_name>overlap_processing.zip</file_name>
     </pyqgis_plugin>
     
 
