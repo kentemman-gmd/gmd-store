@@ -41,7 +41,7 @@ function PluginCard({ plugin, onClick }: { plugin: Plugin; onClick: () => void }
         <img src={plugin.image} alt={plugin.name} className="w-full h-40 object-cover rounded-t-lg" />
       </CardHeader>
       <CardContent className="p-4">
-        <CardTitle className="text-lg mb-1">{plugin.name}</CardTitle>
+        <CardTitle className="text-lg mb-1">{plugin.name} {plugin.latestRelease && '🚀'}</CardTitle>
         <CardDescription className="text-sm text-gray-500 mb-2">{plugin.type}</CardDescription>
         <p className="text-xs text-gray-600">Latest: {plugin.latestRelease}</p>
       </CardContent>
@@ -86,6 +86,7 @@ export function GmdPlugin() {
       const plugins = await Promise.all(
         data.map(async (plugin: PluginData, index: number) => {
           let downloadUrl = plugin.repoUrl // Fallback to repo URL
+          let latestRelease = ""; // Declare and initialize latestRelease
 
           if (plugin.repoUrl.includes("github.com")) {
             const apiUrl = plugin.repoUrl.replace(
@@ -97,6 +98,7 @@ export function GmdPlugin() {
               const releaseResponse = await fetch(apiUrl)
               const releaseData = await releaseResponse.json()
               downloadUrl = releaseData.assets[0]?.browser_download_url || downloadUrl
+              latestRelease = releaseData.tag_name; // Assign tag_name to latestRelease
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error)
             }
@@ -108,7 +110,7 @@ export function GmdPlugin() {
             type: plugin.category,
             image: plugin.iconUrl,
             description: plugin.description,
-            latestRelease: plugin.latestUpdate,
+            latestRelease, // Now this is correctly initialized
             downloadUrl,
           }
         })
