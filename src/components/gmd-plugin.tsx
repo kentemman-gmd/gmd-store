@@ -78,19 +78,6 @@ export function GmdPlugin() {
 
   const fetchPlugins = async () => {
     try {
-      // Check if the cached data exists in localStorage
-      const cachedData = localStorage.getItem("pluginData");
-      const cachedReleaseDate = localStorage.getItem("pluginReleaseDate");
-      const currentTime = new Date().getTime();
-  
-      // If cached data exists and it's not expired (cache expires in 1 minute)
-      if (cachedData && cachedReleaseDate && currentTime - parseInt(cachedReleaseDate) < 60000) {
-        console.log("Using cached plugin data.");
-        setPlugins(JSON.parse(cachedData)); // Use cached data
-        return;
-      }
-  
-      // Fetch plugin data from the server if no valid cache exists or cache has expired
       const response = await fetch(
         "https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/gmd-resources.json"
       );
@@ -103,20 +90,20 @@ export function GmdPlugin() {
   
           // Check if the repo URL is a GitHub repository
           if (plugin.repoUrl.includes("github.com")) {
+            // Ensure `/releases/latest` is added correctly
             const apiUrl = plugin.repoUrl
               .replace("https://github.com", "https://api.github.com/repos")
-              .replace(/\/releases\/latest$/, "") + "/releases/latest";
+              .replace(/\/releases\/latest$/, "") + // Remove trailing `/releases/latest` if it exists
+              "/releases/latest";
   
             try {
               const releaseResponse = await fetch(apiUrl);
               const releaseData = await releaseResponse.json();
-              downloadUrl = releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from assets
-              if (releaseData.tag_name) {
-                latestRelease = releaseData.tag_name; // Use tag_name if available
-              } else {
-                console.warn(`No tag_name found for ${plugin.name}.`);
-                latestRelease = "Not available"; // Indicate missing tag_name
-              }
+  
+              // Safely extract the latest release and download URL
+              latestRelease = releaseData.tag_name || "N/A"; // Use `tag_name` for the release version
+              downloadUrl =
+                releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from `assets`
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error);
               latestRelease = "Error fetching version name"; // Fallback error message
@@ -129,21 +116,18 @@ export function GmdPlugin() {
             type: plugin.category,
             image: plugin.iconUrl,
             description: plugin.description,
-            latestRelease,
-            downloadUrl,
+            latestRelease, // Correctly initialized
+            downloadUrl,   // Updated with release data or fallback
           };
         })
       );
   
-      // Cache the plugin data and release date
-      localStorage.setItem("pluginData", JSON.stringify(plugins));
-      localStorage.setItem("pluginReleaseDate", currentTime.toString());
-  
-      setPlugins(plugins); // Use newly fetched data
+      setPlugins(plugins);
     } catch (error) {
       console.error("Error fetching plugins:", error);
     }
   };
+  
   
   
 
@@ -178,34 +162,31 @@ export function GmdPlugin() {
     )
   })
 
-
   const handleDownload = async (resource: Plugin) => { // Updated parameter type to Plugin
-      try {
-        const response = await fetch(resource.downloadUrl) // Use the downloadUrl from the Plugin
-        const releaseData = await response.json()
-  
-        if (response.ok) {
-          const zipAsset = releaseData.assets.find((asset: { name: string; browser_download_url: string }) => 
-            asset.name.endsWith('.zip')
-          )
-  
-          if (zipAsset) {
-            window.open(zipAsset.browser_download_url, "_blank")
-          } else {
-            console.error('No zip file found in the latest release')
-            // You might want to show an error message to the user here
-          }
+    try {
+      const response = await fetch(resource.downloadUrl) // Use the downloadUrl from the Plugin
+      const releaseData = await response.json()
+
+      if (response.ok) {
+        const zipAsset = releaseData.assets.find((asset: { name: string; browser_download_url: string }) => 
+          asset.name.endsWith('.zip')
+        )
+
+        if (zipAsset) {
+          window.open(zipAsset.browser_download_url, "_blank")
         } else {
-          console.error('Failed to fetch latest release:', releaseData.message)
+          console.error('No zip file found in the latest release')
           // You might want to show an error message to the user here
         }
-      } catch (error) {
-        console.error('Error fetching latest release:', error)
+      } else {
+        console.error('Failed to fetch latest release:', releaseData.message)
         // You might want to show an error message to the user here
       }
+    } catch (error) {
+      console.error('Error fetching latest release:', error)
+      // You might want to show an error message to the user here
     }
-  
-  
+  }
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
