@@ -197,35 +197,41 @@ export function GmdPlugin() {
   
       // Fetch the plugin download URL from GitHub if no valid cache exists or the cache has expired
       const response = await fetch(resource.downloadUrl); // Use the downloadUrl from the Plugin
+      if (!response.ok) {
+        // Log detailed error if the fetch fails
+        const errorMessage = await response.text(); // Get the error message from the response
+        console.error(`Failed to fetch release: ${response.status} - ${errorMessage}`);
+        return; // Exit if there's an error
+      }
+  
       const releaseData = await response.json();
   
-      if (response.ok) {
-        const zipAsset = releaseData.assets.find((asset: { name: string; browser_download_url: string }) =>
-          asset.name.endsWith('.zip')
-        );
+      const zipAsset = releaseData.assets.find((asset: { name: string; browser_download_url: string }) =>
+        asset.name.endsWith('.zip')
+      );
   
-        if (zipAsset) {
-          const downloadUrl = zipAsset.browser_download_url;
+      if (zipAsset) {
+        const downloadUrl = zipAsset.browser_download_url;
   
-          // Cache the download URL and the release date (to track when it was fetched)
-          localStorage.setItem(`pluginDownload_${resource.id}`, JSON.stringify(downloadUrl));
-          localStorage.setItem(`pluginReleaseDate_${resource.id}`, currentTime.toString());
+        // Cache the download URL and the release date (to track when it was fetched)
+        localStorage.setItem(`pluginDownload_${resource.id}`, JSON.stringify(downloadUrl));
+        localStorage.setItem(`pluginReleaseDate_${resource.id}`, currentTime.toString());
   
-          // Open the download link in a new tab
-          window.open(downloadUrl, "_blank");
-        } else {
-          console.error('No zip file found in the latest release');
-          // You might want to show an error message to the user here
-        }
+        // Open the download link in a new tab
+        window.open(downloadUrl, "_blank");
       } else {
-        console.error('Failed to fetch latest release:', releaseData.message);
+        console.error('No zip file found in the latest release');
         // You might want to show an error message to the user here
       }
     } catch (error) {
       console.error('Error fetching latest release:', error);
-      // You might want to show an error message to the user here
+      // Log the error stack for more details
+      if (error instanceof Error) {
+        console.error(error.stack);
+      }
     }
   };
+  
   
 
   return (
