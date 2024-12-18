@@ -110,11 +110,9 @@ export function GmdPlugin() {
             try {
               const releaseResponse = await fetch(apiUrl);
               const releaseData = await releaseResponse.json();
-  
+              downloadUrl = releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from assets
               if (releaseData.tag_name) {
                 latestRelease = releaseData.tag_name; // Use tag_name if available
-                downloadUrl =
-                  releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from assets
               } else {
                 console.warn(`No tag_name found for ${plugin.name}.`);
                 latestRelease = "Not available"; // Indicate missing tag_name
