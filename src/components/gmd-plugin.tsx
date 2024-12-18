@@ -80,29 +80,32 @@ export function GmdPlugin() {
     try {
       const response = await fetch(
         "https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/gmd-resources.json"
-      )
-      const data: PluginData[] = await response.json() // Use PluginData type here
+      );
+      const data: PluginData[] = await response.json();
   
       const plugins = await Promise.all(
         data.map(async (plugin: PluginData, index: number) => {
-          let downloadUrl = plugin.repoUrl // Fallback to repo URL
-          let latestRelease = ""; // Declare and initialize latestRelease
+          let downloadUrl = plugin.repoUrl; // Fallback to repo URL
+          let latestRelease = "N/A"; // Default value if release is unavailable
   
+          // Check if the repo URL is a GitHub repository
           if (plugin.repoUrl.includes("github.com")) {
-            const apiUrl = plugin.repoUrl.replace(
-              "https://github.com",
-              "https://api.github.com/repos"
-            ) + "/releases/latest"
+            // Ensure `/releases/latest` is added correctly
+            const apiUrl = plugin.repoUrl
+              .replace("https://github.com", "https://api.github.com/repos")
+              .replace(/\/releases\/latest$/, "") + // Remove trailing `/releases/latest` if it exists
+              "/releases/latest";
   
             try {
-              const releaseResponse = await fetch(apiUrl)
-              const releaseData = await releaseResponse.json()
+              const releaseResponse = await fetch(apiUrl);
+              const releaseData = await releaseResponse.json();
   
-              // Make sure `tag_name` exists before assigning it
-              latestRelease = releaseData.tag_name || "N/A"; // Fallback to "N/A" if `tag_name` is missing
-              downloadUrl = releaseData.assets[0]?.browser_download_url || downloadUrl
+              // Safely extract the latest release and download URL
+              latestRelease = releaseData.tag_name || "N/A"; // Use `tag_name` for the release version
+              downloadUrl =
+                releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from `assets`
             } catch (error) {
-              console.warn(`Failed to fetch release for ${plugin.name}:`, error)
+              console.warn(`Failed to fetch release for ${plugin.name}:`, error);
               latestRelease = "Error fetching version name"; // Fallback error message
             }
           }
@@ -113,17 +116,19 @@ export function GmdPlugin() {
             type: plugin.category,
             image: plugin.iconUrl,
             description: plugin.description,
-            latestRelease, // Now this is correctly initialized
-            downloadUrl,
-          }
+            latestRelease, // Correctly initialized
+            downloadUrl,   // Updated with release data or fallback
+          };
         })
-      )
+      );
   
-      setPlugins(plugins)
+      setPlugins(plugins);
     } catch (error) {
-      console.error("Error fetching plugins:", error)
+      console.error("Error fetching plugins:", error);
     }
-  }
+  };
+  
+  
   
 
   useEffect(() => {
