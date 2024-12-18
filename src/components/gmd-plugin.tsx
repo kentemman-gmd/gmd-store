@@ -117,7 +117,7 @@ export function GmdPlugin() {
                   releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from assets
               } else {
                 console.warn(`No tag_name found for ${plugin.name}.`);
-                latestRelease = "Tag not available"; // Indicate missing tag_name
+                latestRelease = "Not available"; // Indicate missing tag_name
               }
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error);
@@ -182,29 +182,51 @@ export function GmdPlugin() {
 
   const handleDownload = async (resource: Plugin) => { // Updated parameter type to Plugin
     try {
-      const response = await fetch(resource.downloadUrl) // Use the downloadUrl from the Plugin
-      const releaseData = await response.json()
-
+      // Check if there's cached download URL data for this plugin
+      const cachedDownloadData = localStorage.getItem(`pluginDownload_${resource.id}`);
+      const cachedReleaseDate = localStorage.getItem(`pluginReleaseDate_${resource.id}`);
+      const currentTime = new Date().getTime();
+  
+      // If cached data exists and it's not expired (1 minute cache expiration)
+      if (cachedDownloadData && cachedReleaseDate && currentTime - parseInt(cachedReleaseDate) < 60000) {
+        console.log("Using cached download URL.");
+        const cachedData = JSON.parse(cachedDownloadData);
+        window.open(cachedData, "_blank");
+        return;
+      }
+  
+      // Fetch the plugin download URL from GitHub if no valid cache exists or the cache has expired
+      const response = await fetch(resource.downloadUrl); // Use the downloadUrl from the Plugin
+      const releaseData = await response.json();
+  
       if (response.ok) {
-        const zipAsset = releaseData.assets.find((asset: { name: string; browser_download_url: string }) => 
+        const zipAsset = releaseData.assets.find((asset: { name: string; browser_download_url: string }) =>
           asset.name.endsWith('.zip')
-        )
-
+        );
+  
         if (zipAsset) {
-          window.open(zipAsset.browser_download_url, "_blank")
+          const downloadUrl = zipAsset.browser_download_url;
+  
+          // Cache the download URL and the release date (to track when it was fetched)
+          localStorage.setItem(`pluginDownload_${resource.id}`, JSON.stringify(downloadUrl));
+          localStorage.setItem(`pluginReleaseDate_${resource.id}`, currentTime.toString());
+  
+          // Open the download link in a new tab
+          window.open(downloadUrl, "_blank");
         } else {
-          console.error('No zip file found in the latest release')
+          console.error('No zip file found in the latest release');
           // You might want to show an error message to the user here
         }
       } else {
-        console.error('Failed to fetch latest release:', releaseData.message)
+        console.error('Failed to fetch latest release:', releaseData.message);
         // You might want to show an error message to the user here
       }
     } catch (error) {
-      console.error('Error fetching latest release:', error)
+      console.error('Error fetching latest release:', error);
       // You might want to show an error message to the user here
     }
-  }
+  };
+  
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
