@@ -81,32 +81,33 @@ export function GmdPlugin() {
       const response = await fetch(
         "https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/gmd-resources.json"
       );
-      const data: PluginData[] = await response.json();
+      const data: PluginData[] = await response.json(); // Use PluginData type here
   
       const plugins = await Promise.all(
         data.map(async (plugin: PluginData, index: number) => {
           let downloadUrl = plugin.repoUrl; // Fallback to repo URL
-          let latestRelease = "N/A"; // Default value if release is unavailable
+          let latestRelease = ""; // Declare and initialize latestRelease
   
-          // Check if the repo URL is a GitHub repository
           if (plugin.repoUrl.includes("github.com")) {
-            // Ensure `/releases/latest` is added correctly
-            const apiUrl = plugin.repoUrl
-              .replace("https://github.com", "https://api.github.com/repos")
-              .replace(/\/releases\/latest$/, "") + // Remove trailing `/releases/latest` if it exists
-              "/releases/latest";
+            let apiUrl = plugin.repoUrl.replace(
+              "https://github.com",
+              "https://api.github.com/repos"
+            );
+  
+            // Check if '/releases/latest' is already part of the URL
+            if (!apiUrl.endsWith("/releases/latest")) {
+              apiUrl += "/releases/latest";  // Append only if not already present
+            }
   
             try {
               const releaseResponse = await fetch(apiUrl);
               const releaseData = await releaseResponse.json();
   
-              // Safely extract the latest release and download URL
-              latestRelease = releaseData.tag_name || "N/A"; // Use `tag_name` for the release version
-              downloadUrl =
-                releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from `assets`
+              // If assets exist, use the first one for download
+              downloadUrl = releaseData.assets?.[0]?.browser_download_url || downloadUrl;
+              latestRelease = releaseData.tag_name || latestRelease; // Correctly assign tag_name to latestRelease
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error);
-              latestRelease = "Error fetching version name"; // Fallback error message
             }
           }
   
@@ -116,8 +117,8 @@ export function GmdPlugin() {
             type: plugin.category,
             image: plugin.iconUrl,
             description: plugin.description,
-            latestRelease, // Correctly initialized
-            downloadUrl,   // Updated with release data or fallback
+            latestRelease, // Now this is correctly initialized
+            downloadUrl,
           };
         })
       );
@@ -128,9 +129,6 @@ export function GmdPlugin() {
     }
   };
   
-  
-  
-
   useEffect(() => {
     fetchPlugins()
   }, []) // Empty dependency array to run only once
@@ -253,7 +251,7 @@ export function GmdPlugin() {
                 <div className="col-span-1 sm:col-span-2">
                   <p className="text-lg font-semibold text-gray-700 mb-2">{selectedPlugin.type}</p>
                   <p className="text-base text-gray-600 mb-4">{selectedPlugin.description}</p>
-                  <p className="text-sm text-gray-500 mb-4">Version: {selectedPlugin.latestRelease}</p>
+                  <p className="text-sm text-gray-500 mb-4">Latest release: {selectedPlugin.latestRelease || "N/A"}</p>
                   {/* <Button className="w-full" onClick={() => window.open(selectedPlugin.downloadUrl, "_blank")} >
                     <a href={selectedPlugin.downloadUrl} target="_blank" rel="noopener noreferrer" className="w-full flex justify-center">
                       <Download className="mr-2" />
