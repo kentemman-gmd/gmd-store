@@ -84,7 +84,7 @@ export function GmdPlugin() {
       const currentTime = new Date().getTime();
   
       // If cached data exists and it's not expired (cache expires in 5 minutes)
-      if (cachedData && cachedReleaseDate && currentTime - parseInt(cachedReleaseDate) < 300000) {
+      if (cachedData && cachedReleaseDate && currentTime - parseInt(cachedReleaseDate) < 60000) {
         console.log("Using cached plugin data.");
         setPlugins(JSON.parse(cachedData)); // Use cached data
         return;
