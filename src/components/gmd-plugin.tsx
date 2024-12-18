@@ -89,27 +89,23 @@ export function GmdPlugin() {
           let latestRelease = ""; // Declare and initialize latestRelease
   
           if (plugin.repoUrl.includes("github.com")) {
-            let apiUrl = plugin.repoUrl.replace(
-              "https://github.com",
-              "https://api.github.com/repos"
-            );
-  
-            // Check if '/releases/latest' is already part of the URL
-            if (!apiUrl.endsWith("/releases/latest")) {
-              apiUrl += "/releases/latest";  // Append only if not already present
-            }
-  
+            // Check if the repoUrl already includes '/releases/latest'
+            const apiUrl = plugin.repoUrl.includes("/releases/latest")
+              ? plugin.repoUrl
+              : plugin.repoUrl.replace("https://github.com", "https://api.github.com/repos") + "/releases/latest";
+            
             try {
               const releaseResponse = await fetch(apiUrl);
               const releaseData = await releaseResponse.json();
-  
-              // If assets exist, use the first one for download
               downloadUrl = releaseData.assets?.[0]?.browser_download_url || downloadUrl;
-              latestRelease = releaseData.tag_name || latestRelease; // Correctly assign tag_name to latestRelease
+          
+              // Assign latestRelease after the fetch
+              latestRelease = releaseData.tag_name || latestRelease;
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error);
             }
           }
+          
   
           return {
             id: index,
