@@ -41,9 +41,9 @@ function PluginCard({ plugin, onClick }: { plugin: Plugin; onClick: () => void }
         <img src={plugin.image} alt={plugin.name} className="w-full h-40 object-cover rounded-t-lg" />
       </CardHeader>
       <CardContent className="p-4">
-        <CardTitle className="text-lg mb-1">{plugin.name} {plugin.latestRelease && '🚀'}</CardTitle>
-        <CardDescription className="text-sm text-gray-500 mb-2">{plugin.type}</CardDescription>
-        <p className="text-xs text-gray-600">Latest: {plugin.latestRelease}</p>
+        <CardTitle className="text-lg mb-1">{plugin.name}</CardTitle>
+        {/* <CardDescription className="text-sm text-gray-500 mb-2">{plugin.type}</CardDescription> */}
+        {/* <p className="text-xs text-gray-600">Latest: {plugin.latestRelease || "N/A"} </p> */}
       </CardContent>
     </Card>
   )
@@ -60,7 +60,7 @@ function PluginGrid({ plugins, onPluginClick }: { plugins: Plugin[]; onPluginCli
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
       {plugins.map((plugin) => (
         <PluginCard key={plugin.id} plugin={plugin} onClick={() => onPluginClick(plugin)} />
       ))}
@@ -98,7 +98,7 @@ export function GmdPlugin() {
               const releaseResponse = await fetch(apiUrl)
               const releaseData = await releaseResponse.json()
               downloadUrl = releaseData.assets[0]?.browser_download_url || downloadUrl
-              latestRelease = releaseData.tag_name; // Assign tag_name to latestRelease
+              latestRelease = releaseData.tag_name; // Correctly assign tag_name to latestRelease
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error)
             }
@@ -244,7 +244,7 @@ export function GmdPlugin() {
                 <div className="col-span-1 sm:col-span-2">
                   <p className="text-lg font-semibold text-gray-700 mb-2">{selectedPlugin.type}</p>
                   <p className="text-base text-gray-600 mb-4">{selectedPlugin.description}</p>
-                  <p className="text-sm text-gray-500 mb-4">Latest release: {selectedPlugin.latestRelease}</p>
+                  <p className="text-sm text-gray-500 mb-4">Latest release: {selectedPlugin.latestRelease || "N/A"}</p>
                   {/* <Button className="w-full" onClick={() => window.open(selectedPlugin.downloadUrl, "_blank")} >
                     <a href={selectedPlugin.downloadUrl} target="_blank" rel="noopener noreferrer" className="w-full flex justify-center">
                       <Download className="mr-2" />
