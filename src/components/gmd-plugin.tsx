@@ -82,28 +82,31 @@ export function GmdPlugin() {
         "https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/gmd-resources.json"
       )
       const data: PluginData[] = await response.json() // Use PluginData type here
-
+  
       const plugins = await Promise.all(
         data.map(async (plugin: PluginData, index: number) => {
           let downloadUrl = plugin.repoUrl // Fallback to repo URL
           let latestRelease = ""; // Declare and initialize latestRelease
-
+  
           if (plugin.repoUrl.includes("github.com")) {
             const apiUrl = plugin.repoUrl.replace(
               "https://github.com",
               "https://api.github.com/repos"
             ) + "/releases/latest"
-
+  
             try {
               const releaseResponse = await fetch(apiUrl)
               const releaseData = await releaseResponse.json()
+  
+              // Make sure `tag_name` exists before assigning it
+              latestRelease = releaseData.tag_name || "N/A"; // Fallback to "N/A" if `tag_name` is missing
               downloadUrl = releaseData.assets[0]?.browser_download_url || downloadUrl
-              latestRelease = releaseData.tag_name; // Correctly assign tag_name to latestRelease
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error)
+              latestRelease = "Error fetching version name"; // Fallback error message
             }
           }
-
+  
           return {
             id: index,
             name: plugin.name,
@@ -115,12 +118,13 @@ export function GmdPlugin() {
           }
         })
       )
-
+  
       setPlugins(plugins)
     } catch (error) {
       console.error("Error fetching plugins:", error)
     }
   }
+  
 
   useEffect(() => {
     fetchPlugins()
@@ -244,7 +248,7 @@ export function GmdPlugin() {
                 <div className="col-span-1 sm:col-span-2">
                   <p className="text-lg font-semibold text-gray-700 mb-2">{selectedPlugin.type}</p>
                   <p className="text-base text-gray-600 mb-4">{selectedPlugin.description}</p>
-                  <p className="text-sm text-gray-500 mb-4">Latest release: {selectedPlugin.latestRelease || "N/A"}</p>
+                  <p className="text-sm text-gray-500 mb-4">Version: {selectedPlugin.latestRelease}</p>
                   {/* <Button className="w-full" onClick={() => window.open(selectedPlugin.downloadUrl, "_blank")} >
                     <a href={selectedPlugin.downloadUrl} target="_blank" rel="noopener noreferrer" className="w-full flex justify-center">
                       <Download className="mr-2" />
