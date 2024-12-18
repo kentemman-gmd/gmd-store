@@ -78,6 +78,19 @@ export function GmdPlugin() {
 
   const fetchPlugins = async () => {
     try {
+      // Check if the cached data exists in localStorage
+      const cachedData = localStorage.getItem("pluginData");
+      const cachedReleaseDate = localStorage.getItem("pluginReleaseDate");
+      const currentTime = new Date().getTime();
+  
+      // If cached data exists and it's not expired (cache expires in 5 minutes)
+      if (cachedData && cachedReleaseDate && currentTime - parseInt(cachedReleaseDate) < 300000) {
+        console.log("Using cached plugin data.");
+        setPlugins(JSON.parse(cachedData)); // Use cached data
+        return;
+      }
+  
+      // Fetch plugin data from the server if no valid cache exists or cache has expired
       const response = await fetch(
         "https://raw.githubusercontent.com/kentemman-gmd/gmd-plugins/refs/heads/main/gmd-resources.json"
       );
@@ -90,20 +103,22 @@ export function GmdPlugin() {
   
           // Check if the repo URL is a GitHub repository
           if (plugin.repoUrl.includes("github.com")) {
-            // Ensure `/releases/latest` is added correctly
             const apiUrl = plugin.repoUrl
               .replace("https://github.com", "https://api.github.com/repos")
-              .replace(/\/releases\/latest$/, "") + // Remove trailing `/releases/latest` if it exists
-              "/releases/latest";
+              .replace(/\/releases\/latest$/, "") + "/releases/latest";
   
             try {
               const releaseResponse = await fetch(apiUrl);
               const releaseData = await releaseResponse.json();
   
-              // Safely extract the latest release and download URL
-              latestRelease = releaseData.tag_name || "N/A"; // Use `tag_name` for the release version
-              downloadUrl =
-                releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from `assets`
+              if (releaseData.tag_name) {
+                latestRelease = releaseData.tag_name; // Use tag_name if available
+                downloadUrl =
+                  releaseData.assets?.[0]?.browser_download_url || downloadUrl; // Extract from assets
+              } else {
+                console.warn(`No tag_name found for ${plugin.name}.`);
+                latestRelease = "Tag not available"; // Indicate missing tag_name
+              }
             } catch (error) {
               console.warn(`Failed to fetch release for ${plugin.name}:`, error);
               latestRelease = "Error fetching version name"; // Fallback error message
@@ -116,18 +131,21 @@ export function GmdPlugin() {
             type: plugin.category,
             image: plugin.iconUrl,
             description: plugin.description,
-            latestRelease, // Correctly initialized
-            downloadUrl,   // Updated with release data or fallback
+            latestRelease,
+            downloadUrl,
           };
         })
       );
   
-      setPlugins(plugins);
+      // Cache the plugin data and release date
+      localStorage.setItem("pluginData", JSON.stringify(plugins));
+      localStorage.setItem("pluginReleaseDate", currentTime.toString());
+  
+      setPlugins(plugins); // Use newly fetched data
     } catch (error) {
       console.error("Error fetching plugins:", error);
     }
   };
-  
   
   
 
