@@ -1,6 +1,6 @@
 <plugins>
 
-    <pyqgis_plugin name="QML Style Manager" version="5.22">
+    <pyqgis_plugin name="QML Style Manager" version="5.25">
         <description>QML Style Manager is a powerful QGIS plugin designed to streamline the process
             of applying QML styles to layers within specific layer groups. This plugin is
             particularly useful for managing and styling large sets of geospatial data where
@@ -9,7 +9,7 @@
             from available layer groups ending with _2024maplayers. Apply Styles: Automatically
             apply QML styles to layers based on their names. Rearrange Layers: Organize layers
             within selected groups according to a specified order.</about>
-        <version>5.22</version>
+        <version>5.25</version>
         <qgis_minimum_version>3.22.9</qgis_minimum_version>
         <homepage>https://resources-gmd.vercel.app/</homepage>
         <download_url>
